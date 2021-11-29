@@ -20,13 +20,6 @@ document.addEventListener('init', function(event){
 
 let db = null;
 
-function openDb(){
-    db = openDatabase("ShoppingList", "1", "Shopping List", 1024*1024);
-    db.transaction(function(tx){
-        tx.executeSql("CREATE TABLE IF NOT EXIST items (ID INTEGER PRIMARY KEY ASC, item TEXT)", []);
-    });
-}
-
 function onError(tx, e){
     alert("Что-то пошло не так!" + e.Message);
     console.log("Что-то пошло не так!" + e.Message);
@@ -35,6 +28,17 @@ function onError(tx, e){
 function getItems(){
     db.transaction(function(tx){
         tx.executeSql("SELECT * FROM items", [], renderItems, onError);
+    });
+}
+
+function onSuccess(tx, t){
+    getItems();
+}
+
+function openDb(){
+    db = openDatabase("ShoppingList", "1", "Shopping List", 1024*1024);
+    db.transaction(function(tx){
+        tx.executeSql("CREATE TABLE IF NOT EXIST items (ID INTEGER PRIMARY KEY ASC, item TEXT)", []);
     });
 }
 
@@ -59,10 +63,6 @@ function addItem(){
         textbox.value = '';
         fn.load('home.html');
     }
-}
-
-function onSuccess(tx, t){
-    getItems();
 }
 
 function deleteItem(id){
