@@ -38,7 +38,7 @@ function onSuccess(tx, t){
 function openDb(){
     db = openDatabase("ShoppingList", "1", "Shopping List", 1024*1024);
     db.transaction(function(tx){
-        tx.executeSql("CREATE TABLE IF NOT EXIST items (ID INTEGER PRIMARY KEY ASC, item TEXT)", []);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS items (ID INTEGER PRIMARY KEY ASC, item TEXT)", []);
     });
 }
 
